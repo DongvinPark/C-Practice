@@ -44,7 +44,7 @@ name: kanghwa, open: 09:00, close: 17:00
 포인터 간 타입 불일치 경고 로그가 출력된다.
 */
 
-typedef struct  {
+typedef struct island {
     char* name;
     char* opens;
     char* closes;
