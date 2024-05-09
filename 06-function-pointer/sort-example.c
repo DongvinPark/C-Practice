@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h> // tolower() 함수를 호출하기 위한 임포트.
 
 typedef struct {
     int width;
@@ -99,56 +100,56 @@ int main(){
         {1,34}, {39,48}, {29,54}, {90,3}, {927,8}
     };
 
-    puts("integer asc");
+    puts("\ninteger asc");
     qsort(integer_arr, 13, sizeof(int), compare_int_asc);
     for(int i=0; i<13; i++){
         printf("%i, ", integer_arr[i]);
     }
     printf("\n");
 
-    puts("integer desc");
+    puts("\ninteger desc");
     qsort(integer_arr, 13, sizeof(int), compare_int_desc);
     for(int i=0; i<13; i++){
         printf("%i, ", integer_arr[i]);
     }
     printf("\n");
 
-    puts("character asc");
+    puts("\ncharacter asc");
     qsort(character_arr, 7, sizeof(char), compare_character_asc);
     for(int i=0; i<7; i++){
         printf("%c, ", character_arr[i]);
     }
     printf("\n");
 
-    puts("integer desc");
+    puts("\ninteger desc");
     qsort(character_arr, 7, sizeof(char), compare_character_desc);
     for(int i=0; i<7; i++){
         printf("%c, ", character_arr[i]);
     }
     printf("\n");
 
-    puts("rectangle area asc");
+    puts("\nrectangle area asc");
     qsort(rectangle_arr, 5, sizeof(rectangle), compare_area_asc);
     for(int i=0; i<5; i++){
         printf("%i, ", rectangle_arr[i].width);
     }
     printf("\n");
 
-    puts("rectangle area desc");
+    puts("\nrectangle area desc : print width only");
     qsort(rectangle_arr, 5, sizeof(rectangle), compare_area_desc);
     for(int i=0; i<5; i++){
         printf("%i, ", rectangle_arr[i].width);
     }
     printf("\n");
 
-    puts("string case sensitive asc");
+    puts("\nstring case sensitive asc");
     qsort(string_case_sensitive_arr, 6, sizeof(char**), compare_string_case_sensitive_asc);
     for(int i=0; i<6; i++){
         printf("%s, ", string_case_sensitive_arr[i]);
     }
     printf("\n");
 
-    puts("string case insensitive asc");
+    puts("\nstring case insensitive asc");
     qsort(string_case_sensitive_arr, 6, sizeof(char**), compare_string_case_insensitive_asc);
     for(int i=0; i<6; i++){
         printf("%s, ", string_case_sensitive_arr[i]);
