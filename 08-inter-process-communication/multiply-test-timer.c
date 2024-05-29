@@ -9,6 +9,14 @@
 int score = 0;
 int life_cnt = 3;
 
+/*
+곱셈 문제가 나올 때마다 5초 이내로 답을 맞춰야 하고,
+틀릴 때마다 라이프 개수가 1개씩 깎여 나간다.
+
+5초 이내로 답을 입력하지 못하거나, 라이프 개수가 0이 되면
+게임오버 된다.
+*/
+
 void end_game(int sig){
     printf("\nFinal Score : %i\n", score);
     exit(0);
@@ -34,13 +42,13 @@ void error(char* msg){
 int main(){
     catch_signal(SIGALRM, times_up);
     catch_signal(SIGINT, end_game);
-    srandom (time(0));
+    srandom (time(0)); // 프로그램 실행 때마다 난수가 달라지게 만들기 위한 코드
 
     while(1){
         int a = random() % 11;
         int b = random() % 11;
         char txt[4];
-        alarm(5);
+        alarm(5); // 매 while 루프마다 5초의 제한 시간을 적용한다.
 
         printf("\n %i X %i == ?? ", a, b);
         fgets(txt, 4, stdin);
