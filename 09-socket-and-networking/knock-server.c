@@ -14,6 +14,9 @@
 이 프로그램을 작동시킨 후, 새로운 우분투 터미널을 열어서 텔넷 클라이언트 명령어를 실행하면
 telnet 127.0.0.1 30000
 서버의 응답을 확인할 수 있다.
+
+다수의 클라이언트와 연결할 수 있지만, 스레드를 이용하는 게 아니라
+프로세스를 이용하기 때문에 다소 비효율적이다.
 */
 
 int listener_d;
@@ -112,25 +115,33 @@ int main(int argc, char* argv[]){
             error("cannot open second socket");
         }
 
-        if(
+        if(fork()==0){ // 자식 프로세스를 포크 한다.
+            // 자식 프로세스에서는 클라이언트 요청 리스너용 소켓을 닫아야 한다. 사용하지 않기 때문이다.
+            close(listener_d);
+            if(
             say(
                 connect_d, "Internet Knock Knock Protocol Server\r\nversion 1.0\r\nKnock Knock\r\n>"
                 ) != -1
-        ){
-            read_in(connect_d, buf, sizeof(buf));
-            if(strncasecmp("Who's there?",buf,12)){
-                say(connect_d, "you have to ask first \"Who's there?\" .");
-            } else {
-                if(say(connect_d, "Oscar\r\n>") != -1){
-                    read_in(connect_d, buf, sizeof(buf));
-                    if(strncasecmp("Oscar who?", buf, 10)){
-                        say(connect_d, "you have to ask \"Oscar who?\" for next.");
-                    } else {
-                        say(connect_d, "good question nice :D\r\n");
+            ){
+                read_in(connect_d, buf, sizeof(buf));
+                if(strncasecmp("Who's there?",buf,12)){
+                    say(connect_d, "you have to ask first \"Who's there?\" .");
+                } else {
+                    if(say(connect_d, "Doctor\r\n>") != -1){
+                        read_in(connect_d, buf, sizeof(buf));
+                        if(strncasecmp("Doctor who?", buf, 10)){
+                            say(connect_d, "you have to ask \"Doctor who?\" for next.");
+                        } else {
+                            say(connect_d, "good question nice :D\r\n");
+                        }
                     }
                 }
             }
-        }
+            // 자식 프로세스에서도 클라이언트와의 대화가 끝났으므로 클라이언트와 연결된 소켓을 닫는다.
+            close(connect_d);
+            // 자식 프로세스를 종료한다.
+            exit(0);
+        }//fork if
         close(connect_d);
     }//wh
     return 0;
